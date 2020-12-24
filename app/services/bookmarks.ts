@@ -1,5 +1,6 @@
 // Vendor
 import Service, {inject as service} from '@ember/service';
+import fetch from 'fetch';
 
 // Types
 import BookmarksState from 'better-trading/services/bookmarks/state';
@@ -51,6 +52,23 @@ export default class Bookmarks extends Service {
     if (!deletingFolder.id) return;
 
     return this.bookmarksStorage.deleteFolder(deletingFolder.id);
+  }
+
+  async fetchPastebinCode(link: string) {
+    return fetch(link,
+      {
+        headers: {
+          'Accept': '*/*',
+
+        },
+      }).then(function (response) {
+        console.log(response);
+        let json = response.text();
+        console.log(json);
+        return json;
+      }).catch(function(ex) {
+        console.log('parsing failed', ex)
+      });
   }
 
   initializeFolderStruct(): BookmarksFolderStruct {

@@ -13,6 +13,12 @@
       @onChange={{fn this.handleInput}}
     />
 
+    <Form::Input
+      @label={{t "page.bookmarks.folder-import.import-pastebin.label"}}
+      @autofocus={{false}}
+      @onChange={{fn this.handlePastebin}}
+    />
+
     {{#if this.stagedFolder}}
       <div local-class="import-preview">
         {{#if this.stagedFolder.icon}}

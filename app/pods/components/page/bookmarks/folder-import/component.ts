@@ -39,8 +39,29 @@ export default class FolderImport extends Component<Args> {
 
   @action
   handleInput(input: string) {
-    const result = this.bookmarks.deserializeFolder(input);
+    this.updateFolder(input);
+  }
 
+  @action
+  async handlePastebin(input: string) {
+    console.log(input);
+    if (!input.includes("https://pastebin.com")) {
+      window.alert('This is not a pastebin link');
+      return;
+    }
+    try {
+      const code = await this.bookmarks.fetchPastebinCode(input);
+      if (code) {
+        this.updateFolder(code);
+      }
+    } catch(e) {
+      console.log(e);
+      window.alert('Failed');
+    }
+  }
+
+  updateFolder(code: string) {
+    const result = this.bookmarks.deserializeFolder(code);
     if (result) {
       const [folder, trades] = result;
 
