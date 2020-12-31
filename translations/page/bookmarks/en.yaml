@@ -58,7 +58,7 @@ page:
       import-code:
         label: Import code
       import-pastebin:
-        label: Import Pastebin
+        label: Import Code From Pastebin Link
       preview: '{name} {tradesCount, plural, =0 {} =1 {(1 bookmark)} other {(# bookmarks)}}'
       invalid-code: The entered code seems invalid, try another one.
       save: Save

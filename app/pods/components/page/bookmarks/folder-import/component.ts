@@ -8,14 +8,24 @@ import {tracked} from '@glimmer/tracking';
 import Bookmarks from 'better-trading/services/bookmarks';
 import {BookmarksFolderStruct, BookmarksTradeStruct} from 'better-trading/types/bookmarks';
 
+//Utilities
+import ExtensionBackground from 'better-trading/services/extension-background';
+
 interface Args {
   onCancel: () => void;
   submitTask: any;
 }
+//
+// interface PastebinCode {
+//   code: string;
+// }
 
 export default class FolderImport extends Component<Args> {
   @service('bookmarks')
   bookmarks: Bookmarks;
+
+  @service('extension-background')
+  extensionBackground: ExtensionBackground;
 
   @tracked
   stagedFolder: BookmarksFolderStruct | null = null;
@@ -49,18 +59,23 @@ export default class FolderImport extends Component<Args> {
       window.alert('This is not a pastebin link');
       return;
     }
+
     try {
-      const code = await this.bookmarks.fetchPastebinCode(input);
+      let splitInput = input.split('/');
+      let binId = splitInput[splitInput.length - 1];
+      console.log('binId' , binId);
+      const code = await this.extensionBackground.fetchPastebinResource(binId);
+      console.log('code' , code);
+
       if (code) {
         this.updateFolder(code);
       }
     } catch(e) {
       console.log(e);
-      window.alert('Failed');
     }
   }
 
-  updateFolder(code: string) {
+  updateFolder(code: any) {
     const result = this.bookmarks.deserializeFolder(code);
     if (result) {
       const [folder, trades] = result;

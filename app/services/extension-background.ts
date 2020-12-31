@@ -13,6 +13,15 @@ export default class ExtensionBackground extends Service {
       });
     });
   }
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async fetchPastebinResource(pasteId: string): Promise<object> {
+    return new Promise((resolve, reject) => {
+      extensionApi().runtime.sendMessage({query: 'pastebin', pasteId}, (payload: object | null) => {
+        console.log('payload', payload);
+        return payload ? resolve(payload) : reject(null);
+      });
+    });
+  }
 }
 
 declare module '@ember/service' {

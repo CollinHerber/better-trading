@@ -12,6 +12,12 @@ extensionApi.runtime.onMessage.addListener(function(request, sender, sendRespons
       .then(function(payload) { sendResponse(payload) })
       .catch(function(_error) { sendResponse(null) });
   }
+  if (request.query === 'pastebin') {
+    fetch('https://pastebin.com/raw/' + request.pasteId)
+      .then(function(response) { return response.text() })
+      .then(function(payload) { sendResponse(payload) })
+      .catch(function(_error) { sendResponse(null) });
+  }
 
   return true;
 });
